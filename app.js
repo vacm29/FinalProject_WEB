@@ -98,7 +98,14 @@ app.route('/products/insert/insertMany/').get((req, res) => {
      res.send('done');
      //>
 });
-//MOGOOS ENF Productos-----------------------------------------------
+//MOGOOS END Products-----------------------------------------------
+
+//MONGOOSE Store----------------------------------------------------
+
+app.get('/store/buy', (req, res) => {
+    res.sendFile("./src/pages/buy.html", {root: __dirname});   
+});
+//MONGOOSE END  Store-----------------------------------------------
 
 //Main Page----------------------------------------------------------
 app.get('/', (req, res) => {
