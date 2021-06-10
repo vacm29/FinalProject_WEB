@@ -1,0 +1,100 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <!-- Required meta tags -->
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Store</title>
+  <style>table, th {
+    border: 1px solid black;
+    border-collapse: collapse;
+  }</style>
+</head>
+<body>
+    <h1>Welcome to the store!</h1>
+    <!--<a href = "./logout.html">Log</a>-->
+
+    <h2>Products</h2>
+    <table id="productsTable">
+      <tr id="rowHeader">
+          <th>Name</th>
+          <th>Brand</th>
+          <th>Price</th>
+          <th>Quantity</th>
+          <th>Delete</th>
+      </tr>
+    </table>
+    <h2>Shopping Cart</h2>
+    <table id="cart">
+      <tr id="rowHeader">
+          <th>Name</th>
+          <th>Brand</th>
+          <th>Price</th>
+          <th>Quantity</th>
+          <th>Delete</th>
+      </tr>
+  </table>
+  <h3 id="total">Total: $0.00</h3>
+
+  <button id="btnBuy">Finish Purchase</button>
+  <!--<a href="./account.html">Account</a> -->
+  <script>
+    const btnAdd = document.getElementById('btnAdd');
+        const table = document.getElementById('productsTable');
+        let signal = document.createElement('p');
+        axios.get('http://127.0.0.1:3000/products')
+        .then(response => {
+            console.log(response);
+            populateTable(response.data);
+        })
+        .catch(error => {
+            console.log(error.response);
+            alert(`Problem when retrieving products info ${error.response}`);
+        });
+
+        function populateTable(products){
+            products.forEach(m => { 
+                let row = table.insertRow(); 
+                let cellName = row.insertCell();
+                let cellBrand = row.insertCell();
+                let cellPrice = row.insertCell();
+                let cellEdit = row.insertCell();
+                let cellDelete = row.insertCell();
+
+                cellName.innerText = m.prodName;
+                cellBrand.innerText = m.prodBrand;
+                cellPrice.innerText = m.prodPrice;
+
+                btnEdit = document.createElement('button');
+                btnEdit.appendChild(document.createTextNode('Edit'));
+                btnEdit.addEventListener('click', () => { window.location.replace(`http://127.0.0.1:3000/products/${m._id}/edit`) });
+                cellEdit.appendChild(btnEdit);
+
+                btnDelete = document.createElement('button');
+                btnDelete.appendChild(document.createTextNode('Delete'));
+                btnDelete.addEventListener('click', (event) => {
+                    let productId = m._id;
+                    axios.delete(`http://127.0.0.1:3000/products/${productId}`)
+                    .then(response => {
+                        console.log(response);
+                        alert('Product deleted successfully');
+                        row.parentNode.removeChild(row);
+                    })
+                    .catch(error => {
+                        console.log(error.response);
+                        alert(`Problem when deleting the products info ${error.response}`);
+                    });
+                });
+                cellEdit.appendChild(btnDelete);
+            });
+        }
+                
+        btnBuy.addEventListener('click', () => {
+            window.location.replace(`http://127.0.0.1:3000/products/buy`);
+        });
+  </script>
+    
+  <script type="application/javascript" src="/app.js"></script>
+  
+</body>
+</html>
