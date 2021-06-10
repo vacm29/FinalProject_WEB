@@ -7,14 +7,11 @@ require('./src/database');
 let productModel = require('./src/models/products');
 //let userModel = require('./src/models/users');
 
-//MONGOOSE -general
-app.route('/cart').get((req, res) =>{
-    res.sendFile('cart.html', {root: './src/pages/'});
-});
 
 //MONGOOOSE -Usuario----------------------
 
 //Mongoose END Usuario----------------------
+
 //MONGOOSE - Products
 app.route('/products/create').get((req, res) =>{
     res.sendFile('add.html', {root: './src/pages/'});
@@ -30,8 +27,6 @@ app.route('/products/create').post((req, res) =>{
     });
 });
 
-
-//que esta pasando aqui----
 app.route('/products/all').get((req, res) => {
     res.sendFile('productList.html', {root: './src/pages'});
 });
@@ -40,7 +35,6 @@ app.route('/products').get(async (req, res) => {
     let allMovies = await productModel.find();
     res.send(allMovies);
 });
-//--------------------
 
 app.route('/products/:id').get(async (req, res) => {
     let productId  = req.params.id;
@@ -87,8 +81,6 @@ app.route('/products/:id/edit').get((req, res) => {
     });
 });
 
-//necesita el erro con cada ingreso? si repetir
-
 app.route('/products/insert/insertMany/').get((req, res) => {
      //First products<
      let product = new productModel({prodName: "Dozena de Huevos", prodBrand: "Granja Gold", prodPrice: 30.00});
@@ -106,11 +98,11 @@ app.route('/products/insert/insertMany/').get((req, res) => {
      res.send('done');
      //>
 });
-
+//MOGOOS ENF Productos-----------------------------------------------
 
 //Main Page----------------------------------------------------------
 app.get('/', (req, res) => {
-    res.sendFile("./src/pages/store-front.html", {root: __dirname});    
+    res.sendFile("./src/pages/store-front.html", {root: __dirname});   
 });
 
 
